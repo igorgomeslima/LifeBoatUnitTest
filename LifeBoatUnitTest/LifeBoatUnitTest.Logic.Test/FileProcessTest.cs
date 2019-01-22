@@ -11,6 +11,53 @@ namespace LifeBoatUnitTest.Logic.Test
         private const string BAD_FILE_NAME = @"C:\:(.exe";
         private string _GoodFileName;
 
+        #region Class Initialize and Cleanup
+
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext testContext)
+        {
+            testContext.WriteLine("In the Class Initialize method.");
+        }
+
+        [ClassCleanup]
+        public static void ClassCleanup()
+        {
+           
+        }
+
+        #endregion
+
+        #region Tests Initialize and Cleanup
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            if (TestContext.TestName == nameof(FileNameDoesExist))
+            {
+                SetGoodFileName();
+                if (!string.IsNullOrEmpty(_GoodFileName))
+                {
+                    TestContext.WriteLine($"Creating the file {_GoodFileName}");
+                    File.AppendAllText(_GoodFileName, default(string));
+                }
+            }
+        }
+
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            if (TestContext.TestName == nameof(FileNameDoesExist))
+            {
+                if (!string.IsNullOrEmpty(_GoodFileName))
+                {
+                    TestContext.WriteLine($"Deleting the file {_GoodFileName}");
+                    File.Delete(_GoodFileName);
+                }
+            }
+        }
+
+        #endregion
+
         public TestContext TestContext { get; set; }
 
         [TestMethod]
@@ -20,19 +67,16 @@ namespace LifeBoatUnitTest.Logic.Test
             var fileProcess = new FileProcess();
             bool resultMethodFileExists;
 
-            SetGoodFileName();
-
-            TestContext.WriteLine($"Creating the file {_GoodFileName}");
-
-            File.AppendAllText(_GoodFileName, default(string));
+            //TestContext.WriteLine($"Creating the file {_GoodFileName}");
+            //File.AppendAllText(_GoodFileName, default(string));
 
             //Act
             TestContext.WriteLine($"Testing the file {_GoodFileName}");
             resultMethodFileExists = fileProcess.FileExists(_GoodFileName);
             //resultMethodFileExists = fileProcess.FileExists(@"C:\Windows\notepad.exe");
 
-            TestContext.WriteLine($"Deleting the file {_GoodFileName}");
-            File.Delete(_GoodFileName);
+            //TestContext.WriteLine($"Deleting the file {_GoodFileName}");
+            //File.Delete(_GoodFileName);
 
             //Assert
             Assert.IsTrue(resultMethodFileExists);
