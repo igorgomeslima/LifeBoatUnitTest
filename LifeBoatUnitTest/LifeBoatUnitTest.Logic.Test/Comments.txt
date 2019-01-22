@@ -1,0 +1,3 @@
+﻿var a = TestHelper.GetApplicationConfiguration(AppDomain.CurrentDomain.BaseDirectory);
+
+resultMethodFileExists = fileProcess.FileExists(a.GoodFileName);
