@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LifeBoatUnitTest.Logic.Test
@@ -9,6 +10,8 @@ namespace LifeBoatUnitTest.Logic.Test
     public class FileProcessTest
     {
         private const string BAD_FILE_NAME = @"C:\:(.exe";
+        private const string FILE_NAME = @"FileToDeploy.txt";
+
         private string _GoodFileName;
 
         #region Class Initialize and Cleanup
@@ -44,6 +47,7 @@ namespace LifeBoatUnitTest.Logic.Test
         }
 
         [TestCleanup]
+        [Description("Check to see if a file does exist.")]
         public void TestCleanup()
         {
             if (TestContext.TestName == nameof(FileNameDoesExist))
@@ -61,6 +65,18 @@ namespace LifeBoatUnitTest.Logic.Test
         public TestContext TestContext { get; set; }
 
         [TestMethod]
+        [Timeout(3000)]
+        public void SimulateTimeout()
+        {
+           Thread.Sleep(5000);
+        }
+        
+        [TestMethod]
+        [Description("Check to see if a file does NOT exist.")]
+        [Owner("Dev1")]
+        [Priority(0)]
+        [TestCategory("NoException")]
+        [Ignore("")]
         public void FileNameDoesExist()
         {
             //Arrange
@@ -83,6 +99,29 @@ namespace LifeBoatUnitTest.Logic.Test
         }
 
         [TestMethod]
+        [Owner("Dev1")]
+        [DeploymentItem(FILE_NAME)]
+        public void FileNameDoesExistUsingDeploymentItem()
+        {
+            //Arrange
+            var fileProcess = new FileProcess();
+            string fileName;
+            bool resultMethodFileExists;
+
+            fileName = $@"{TestContext.DeploymentDirectory}\{FILE_NAME}";
+
+            //Act
+            TestContext.WriteLine($"Checking file: {fileName}");
+            resultMethodFileExists = fileProcess.FileExists(fileName);
+
+            //Assert
+            Assert.IsTrue(resultMethodFileExists);
+        }
+
+        [TestMethod]
+        [Owner("Dev1")]
+        [Priority(0)]
+        [TestCategory("NoException")]
         public void FileNameDoesNotExist()
         {
             //Arrange
@@ -98,6 +137,9 @@ namespace LifeBoatUnitTest.Logic.Test
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
+        [Owner("Dev2")]
+        [Priority(1)]
+        [TestCategory("Exception")]
         public void FileNameNullOrEmpty_ThrowsArgumentNullException()
         {
             //Arrange
@@ -108,6 +150,9 @@ namespace LifeBoatUnitTest.Logic.Test
         }
 
         [TestMethod]
+        [Owner("Dev3")]
+        [Priority(1)]
+        [TestCategory("Exception")]
         public void FileNameNullOrEmpty_ThrowsArgumentNullException_UsingTryCatch()
         {
             //Arrange
