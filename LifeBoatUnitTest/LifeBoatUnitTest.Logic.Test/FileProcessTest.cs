@@ -35,7 +35,7 @@ namespace LifeBoatUnitTest.Logic.Test
         [TestInitialize]
         public void TestInitialize()
         {
-            if (TestContext.TestName == nameof(FileNameDoesExist))
+            if (TestContext.TestName.StartsWith(nameof(FileNameDoesExist)))
             {
                 SetGoodFileName();
                 if (!string.IsNullOrEmpty(_GoodFileName))
@@ -63,6 +63,34 @@ namespace LifeBoatUnitTest.Logic.Test
         #endregion
 
         public TestContext TestContext { get; set; }
+
+        [TestMethod]
+        public void FileNameDoesExistSimpleMessage()
+        {
+            //Arrange
+            var fileProcess = new FileProcess();
+            bool resultMethodFileExists;
+
+            //Act
+            resultMethodFileExists = fileProcess.FileExists(_GoodFileName);
+
+            //Assert
+            Assert.IsFalse(resultMethodFileExists, "File does NOT exist.");
+        }
+
+        [TestMethod]
+        public void FileNameDoesExistWithFormatting()
+        {
+            //Arrange
+            var fileProcess = new FileProcess();
+            bool resultMethodFileExists;
+
+            //Act
+            resultMethodFileExists = fileProcess.FileExists(_GoodFileName);
+
+            //Assert
+            Assert.IsFalse(resultMethodFileExists, $"File '{_GoodFileName}' does NOT exist.");
+        }
 
         [TestMethod]
         [Timeout(3000)]
