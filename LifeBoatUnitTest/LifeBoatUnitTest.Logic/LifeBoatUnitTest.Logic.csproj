@@ -44,6 +44,7 @@
     <Compile Include="FileProcess.cs" />
     <Compile Include="PersonClasses\Employee.cs" />
     <Compile Include="PersonClasses\Person.cs" />
+    <None Include="PersonClasses\PersonManager.bak" />
     <Compile Include="PersonClasses\PersonManager.cs" />
     <Compile Include="PersonClasses\Supervisor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

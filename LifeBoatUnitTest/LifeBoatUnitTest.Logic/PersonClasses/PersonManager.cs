@@ -1,51 +1,82 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace LifeBoatUnitTest.Logic.PersonClasses
 {
-    public class PersonManager : Person
-    {
-        public Person CreatePerson(string first, string last, bool isSupervisor)
-        {
-            Person person = null;
+    public class PersonManager
+  {
+    public Person CreatePerson(string first,
+                                string last,
+                                bool isSupervisor) {
+      Person ret = null;
 
-            if (!string.IsNullOrEmpty(first))
-            {
-                if (isSupervisor)
-                {
-                    person = new Supervisor();
-                }
-                else
-                {
-                    person = new Employee();
-                }
-
-                person.FirstName = first;
-                person.LastName = last;
-            }
-
-            return person;
+      if (!string.IsNullOrEmpty(first)) {
+        if (isSupervisor) {
+          ret = new Supervisor();
+        }
+        else {
+          ret = new Employee();
         }
 
-        public List<Person> GetPeople()
-        {
-            var persons = new List<Person>();
+        // Assign variables
+        ret.FirstName = first;
+        ret.LastName = last;
+      }
 
-            persons.Add(new Person { FirstName = "Igor1", LastName = "Gomes" });
-            persons.Add(new Person { FirstName = "Igor2", LastName = "Gomes" });
-            persons.Add(new Person { FirstName = "Igor3", LastName = "Gomes" });
-
-            return persons;
-        }
-
-        public List<Person> GetSupervisors()
-        {
-            var persons = new List<Person>();
-
-            persons.Add(CreatePerson("Igor1", "Gomes", true));
-            persons.Add(CreatePerson("Igor2", "Gomes", true));
-
-            return persons;
-        }
+      return ret;
     }
+
+    /// <summary>
+    /// This method simulates retrieving a list of Person objects from a database or other data store
+    /// </summary>
+    /// <returns>A collection of Person objects</returns>
+    public List<Person> GetPeople() {
+      List<Person> people = new List<Person>();
+
+      people.Add(new Person() { FirstName = "Igor1", LastName = "Gomes" });
+      people.Add(new Person() { FirstName = "Igor2", LastName = "Gomes" });
+      people.Add(new Person() { FirstName = "Igor3", LastName = "Gomes" });
+
+      return people;
+    }
+
+    /// <summary>
+    /// This method simulates retrieving a list of Supervisor objects from a database or other data store
+    /// </summary>
+    /// <returns>A collection of Supervisor objects</returns>
+    public List<Person> GetSupervisors() {
+      List<Person> people = new List<Person>();
+
+      people.Add(CreatePerson("Igor1", "Gomes", true));
+      people.Add(CreatePerson("Igor2", "Gomes", true));
+
+      return people;
+    }
+
+    /// <summary>
+    /// This method simulates retrieving a list of Employee objects from a database or other data store
+    /// </summary>
+    /// <returns>A collection of Person objects</returns>
+    public List<Person> GetEmployees() {
+      List<Person> people = new List<Person>();
+
+      people.Add(CreatePerson("Igor1", "Gomes1", false));
+      people.Add(CreatePerson("Igor2", "Gomes2", false));
+      people.Add(CreatePerson("Igor3", "Gomes3", false));
+
+      return people;
+    }
+
+    /// <summary>
+    /// This method simulates retrieving a list of Supervisor and Employee objects from a database or other data store
+    /// </summary>
+    /// <returns>A collection of Supervisor and Employee objects</returns>
+    public List<Person> GetSupervisorsAndEmployees() {
+      List<Person> people = new List<Person>();
+
+      people.AddRange(GetEmployees());
+      people.AddRange(GetSupervisors());
+
+      return people;
+    }
+  }
 }

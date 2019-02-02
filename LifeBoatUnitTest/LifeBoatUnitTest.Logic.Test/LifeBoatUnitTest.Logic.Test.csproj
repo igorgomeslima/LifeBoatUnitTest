@@ -98,6 +98,7 @@
     <Compile Include="CollectionAssertClassTest.cs" />
     <Compile Include="Common\TestsInitialization.cs" />
     <Compile Include="FileProcessTest.cs" />
+    <Compile Include="PersonManagerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringAssertClassTest.cs" />
     <Compile Include="TestHelper.cs" />
